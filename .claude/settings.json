@@ -27,36 +27,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "actions/thinking.sh"
+            "command": "actions/thinking.sh && actions/idle.sh"
           }
         ]
-      },
-      {
-        "matcher": "!WebSearch",
+      }
+    ],
+    "PostToolUse": [
+        {
         "hooks": [
           {
             "type": "command",
-            "command": "actions/random.sh"
+            "command": "actions/happy.sh"
           }
         ]
       }
     ],
     "Notification": [
       {
-        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "actions/requesting_permissions_soft.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "!(Edit|Write)",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "actions/requesting_permissions_loud.sh"
+            "command": "actions/requesting_permissions.sh && actions/idle.sh"
           }
         ]
       }
@@ -66,7 +57,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "actions/operation_complete.sh"
+            "command": "actions/operation_complete.sh && actions/idle.sh"
           }
         ]
       }

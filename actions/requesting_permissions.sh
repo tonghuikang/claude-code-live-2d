@@ -6,6 +6,9 @@ MOTIONS=(
   '{"type":"motion","group":"FlickRight","index":1}'
   '{"type":"motion","group":"Shake","index":0}'
   '{"type":"motion","group":"Shake","index":1}'
+  '{"type":"motion","group":"Tap","index":4}'
+  '{"type":"motion","group":"Tap","index":5}'
+  '{"type":"motion","group":"FlickRight","index":2}'
 )
 
 # Select a random motion
