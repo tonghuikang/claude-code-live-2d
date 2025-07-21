@@ -9,7 +9,11 @@
       "mcp__puppeteer__puppeteer_select",
       "mcp__puppeteer__puppeteer_hover",
       "Bash(curl:*)",
-      "Bash(npm run serve:*)"
+      "Bash(npm run serve:*)",
+      "Bash(npm run build:*)",
+      "Bash(rm:*)",
+      "Bash(curl -X POST:*)",
+      "Bash(pkill:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

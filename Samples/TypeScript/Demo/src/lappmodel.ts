@@ -512,10 +512,11 @@ export class LAppModel extends CubismUserModel {
     this._model.loadParameters(); // 前回セーブされた状態をロード
     if (this._motionManager.isFinished()) {
       // モーションの再生がない場合、待機モーションの中からランダムで再生する
-      this.startRandomMotion(
-        LAppDefine.MotionGroupIdle,
-        LAppDefine.PriorityIdle
-      );
+      // DISABLED: Automatic idle animations to better see queued actions
+      // this.startRandomMotion(
+      //   LAppDefine.MotionGroupIdle,
+      //   LAppDefine.PriorityIdle
+      // );
     } else {
       motionUpdated = this._motionManager.updateMotion(
         this._model,

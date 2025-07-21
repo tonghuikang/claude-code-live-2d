@@ -9,6 +9,8 @@
 export let s_instance: LAppWavFileHandler = null;
 
 export class LAppWavFileHandler {
+  private _audioElement: HTMLAudioElement = null;
+
   /**
    * クラスのインスタンス（シングルトン）を返す。
    * インスタンスが生成されていない場合は内部でインスタンスを生成する。
@@ -94,7 +96,41 @@ export class LAppWavFileHandler {
     // RMS値をリセット
     this._lastRms = 0.0;
 
+    // Play audio using HTML5 Audio
+    this.playAudio(filePath);
+    
     this.loadWavFile(filePath);
+  }
+
+  private playAudio(filePath: string): void {
+    try {
+      // Stop previous audio if playing
+      if (this._audioElement) {
+        this._audioElement.pause();
+        this._audioElement = null;
+      }
+
+      // Create and play new audio
+      this._audioElement = new Audio(filePath);
+      this._audioElement.volume = 1.0;
+      
+      // Add event listeners for debugging
+      this._audioElement.addEventListener('play', () => {
+        console.log('[LAppWavFileHandler] Audio started playing:', filePath);
+      });
+      
+      this._audioElement.addEventListener('error', (e) => {
+        console.error('[LAppWavFileHandler] Audio error:', e);
+      });
+
+      // Play the audio
+      this._audioElement.play().catch(error => {
+        console.warn('[LAppWavFileHandler] Audio playback failed:', error);
+        console.warn('This might be due to browser autoplay policy. User interaction may be required.');
+      });
+    } catch (error) {
+      console.error('[LAppWavFileHandler] Error creating audio:', error);
+    }
   }
 
   public getRms(): number {

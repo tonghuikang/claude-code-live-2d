@@ -13,12 +13,16 @@ import * as LAppDefine from './lappdefine';
 import { LAppModel } from './lappmodel';
 import { LAppPal } from './lapppal';
 import { LAppSubdelegate } from './lappsubdelegate';
+import { ActionClient, Action } from './actionclient';
 
 /**
  * サンプルアプリケーションにおいてCubismModelを管理するクラス
  * モデル生成と破棄、タップイベントの処理、モデル切り替えを行う。
  */
 export class LAppLive2DManager {
+  private _actionQueue: Action[] = [];
+  private _isProcessingAction: boolean = false;
+
   /**
    * 現在のシーンで保持しているすべてのモデルを解放する
    */
@@ -97,6 +101,11 @@ export class LAppLive2DManager {
       }
     }
 
+    // Process queued actions when not currently processing
+    if (!this._isProcessingAction && this._actionQueue.length > 0) {
+      this.processNextAction();
+    }
+
     model.update();
     model.draw(projection); // 参照渡しなのでprojectionは変質する。
   }
@@ -159,12 +168,15 @@ export class LAppLive2DManager {
     this._viewMatrix = new CubismMatrix44();
     this._models = new csmVector<LAppModel>();
     this._sceneIndex = 0;
+    this._actionClient = new ActionClient();
   }
 
   /**
    * 解放する。
    */
-  public release(): void {}
+  public release(): void {
+    this._actionClient.stopPolling();
+  }
 
   /**
    * 初期化する。
@@ -173,6 +185,90 @@ export class LAppLive2DManager {
   public initialize(subdelegate: LAppSubdelegate): void {
     this._subdelegate = subdelegate;
     this.changeScene(this._sceneIndex);
+    
+    // Start polling for actions from the server
+    this._actionClient.startPolling((action: Action) => {
+      this.queueAction(action);
+    });
+  }
+
+  /**
+   * Add an action to the queue
+   * @param action The action to queue
+   */
+  private queueAction(action: Action): void {
+    this._actionQueue.push(action);
+    console.log(`[LAppLive2DManager] Queued action: ${JSON.stringify(action)}. Queue size: ${this._actionQueue.length}`);
+  }
+
+  /**
+   * Process the next action in the queue
+   */
+  private processNextAction(): void {
+    if (this._actionQueue.length === 0 || this._isProcessingAction) return;
+
+    const action = this._actionQueue.shift();
+    console.log(`[LAppLive2DManager] Processing queued action: ${JSON.stringify(action)}. Remaining: ${this._actionQueue.length}`);
+    
+    this._isProcessingAction = true;
+    this.processAction(action);
+  }
+
+  /**
+   * Process an action from the server
+   * @param action The action to process
+   */
+  private processAction(action: Action): void {
+    const model = this._models.at(0);
+    if (!model) return;
+
+    console.log(`[LAppLive2DManager] Processing action: ${JSON.stringify(action)}`);
+
+    switch (action.type) {
+      case 'motion':
+        if (action.group && action.index !== undefined) {
+          model.startMotion(
+            action.group,
+            action.index,
+            LAppDefine.PriorityNormal,
+            this.finishedMotion,
+            this.beganMotion
+          );
+        } else if (action.group) {
+          model.startRandomMotion(
+            action.group,
+            LAppDefine.PriorityNormal,
+            this.finishedMotion,
+            this.beganMotion
+          );
+        }
+        break;
+      
+      case 'expression':
+        if (action.name) {
+          model.setExpression(action.name);
+        } else {
+          model.setRandomExpression();
+        }
+        // Expressions change immediately, so we can process next action
+        setTimeout(() => {
+          this._isProcessingAction = false;
+        }, 500); // Give 500ms for expression to be visible
+        break;
+      
+      case 'tap':
+        if (action.x !== undefined && action.y !== undefined) {
+          this.onTap(action.x, action.y);
+        }
+        // Tap might trigger a motion, so wait for it to complete
+        // If no motion is triggered, reset after a delay
+        setTimeout(() => {
+          if (this._isProcessingAction) {
+            this._isProcessingAction = false;
+          }
+        }, 1000);
+        break;
+    }
   }
 
   /**
@@ -183,6 +279,7 @@ export class LAppLive2DManager {
   _viewMatrix: CubismMatrix44; // モデル描画に用いるview行列
   _models: csmVector<LAppModel>; // モデルインスタンスのコンテナ
   private _sceneIndex: number; // 表示するシーンのインデックス値
+  private _actionClient: ActionClient; // Action server client
 
   // モーション再生開始のコールバック関数
   beganMotion = (self: ACubismMotion): void => {
@@ -193,5 +290,7 @@ export class LAppLive2DManager {
   finishedMotion = (self: ACubismMotion): void => {
     LAppPal.printMessage('Motion Finished:');
     console.log(self);
+    // Reset processing flag to allow next action
+    this._isProcessingAction = false;
   };
 }
