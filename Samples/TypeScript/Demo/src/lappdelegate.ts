@@ -109,8 +109,11 @@ export class LAppDelegate {
    * 実行処理。
    */
   public run(): void {
-    // メインループ
-    const loop = (): void => {
+    // Initialize background worker
+    this.initializeBackgroundWorker();
+
+    // Main update function
+    const performUpdate = (): void => {
       // インスタンスの有無の確認
       if (s_instance == null) {
         return;
@@ -122,11 +125,84 @@ export class LAppDelegate {
       for (let i = 0; i < this._subdelegates.getSize(); i++) {
         this._subdelegates.at(i).update();
       }
+    };
 
-      // ループのために再帰呼び出し
+    // Traditional animation loop
+    const loop = (): void => {
+      performUpdate();
       requestAnimationFrame(loop);
     };
+
+    // Start the loop
     loop();
+  }
+
+  /**
+   * Initialize background worker for maintaining updates in background tabs
+   */
+  private initializeBackgroundWorker(): void {
+    try {
+      // Create worker from inline code
+      const workerCode = `
+        let intervalId = null;
+        self.addEventListener('message', (e) => {
+          if (e.data.command === 'start') {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(() => {
+              self.postMessage({ type: 'tick' });
+            }, 16.67); // 60 FPS
+          } else if (e.data.command === 'stop') {
+            if (intervalId) {
+              clearInterval(intervalId);
+              intervalId = null;
+            }
+          }
+        });
+      `;
+      
+      const blob = new Blob([workerCode], { type: 'application/javascript' });
+      const workerUrl = URL.createObjectURL(blob);
+      this._backgroundWorker = new Worker(workerUrl);
+      
+      // Handle worker messages
+      this._backgroundWorker.addEventListener('message', (e) => {
+        if (e.data.type === 'tick' && this._useBackgroundProcessing) {
+          const now = performance.now();
+          // Throttle updates to prevent overwhelming the system
+          if (now - this._lastUpdateTime > 16) {
+            this._lastUpdateTime = now;
+            // Update time
+            LAppPal.updateTime();
+            // Update all subdelegates
+            for (let i = 0; i < this._subdelegates.getSize(); i++) {
+              this._subdelegates.at(i).update();
+            }
+          }
+        }
+      });
+
+      // Monitor page visibility
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          // Page is hidden, enable background processing
+          this._useBackgroundProcessing = true;
+          this._backgroundWorker.postMessage({ command: 'start' });
+          console.log('[LAppDelegate] Page hidden, enabling background processing');
+        } else {
+          // Page is visible, disable background processing
+          this._useBackgroundProcessing = false;
+          this._backgroundWorker.postMessage({ command: 'stop' });
+          console.log('[LAppDelegate] Page visible, disabling background processing');
+        }
+      });
+
+      // Clean up URL after worker is created
+      URL.revokeObjectURL(workerUrl);
+      
+      console.log('[LAppDelegate] Background worker initialized');
+    } catch (error) {
+      console.warn('[LAppDelegate] Failed to initialize background worker:', error);
+    }
   }
 
   /**
@@ -273,6 +349,9 @@ export class LAppDelegate {
     this._cubismOption = new Option();
     this._subdelegates = new csmVector<LAppSubdelegate>();
     this._canvases = new csmVector<HTMLCanvasElement>();
+    this._backgroundWorker = null;
+    this._useBackgroundProcessing = false;
+    this._lastUpdateTime = 0;
   }
 
   /**
@@ -309,4 +388,19 @@ export class LAppDelegate {
    * 登録済みイベントリスナー 関数オブジェクト
    */
   private pointCancelEventListener: (this: Document, ev: PointerEvent) => void;
+
+  /**
+   * Background worker for maintaining timing
+   */
+  private _backgroundWorker: Worker;
+
+  /**
+   * Flag to use background processing
+   */
+  private _useBackgroundProcessing: boolean;
+
+  /**
+   * Last update timestamp
+   */
+  private _lastUpdateTime: number;
 }

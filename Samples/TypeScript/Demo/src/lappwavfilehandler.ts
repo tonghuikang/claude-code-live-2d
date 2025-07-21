@@ -114,6 +114,9 @@ export class LAppWavFileHandler {
       this._audioElement = new Audio(filePath);
       this._audioElement.volume = 1.0;
       
+      // Enable background playback on mobile devices
+      this._audioElement.setAttribute('playsinline', 'true');
+      
       // Add event listeners for debugging
       this._audioElement.addEventListener('play', () => {
         console.log('[LAppWavFileHandler] Audio started playing:', filePath);
@@ -123,10 +126,38 @@ export class LAppWavFileHandler {
         console.error('[LAppWavFileHandler] Audio error:', e);
       });
 
+      // Handle visibility change to resume audio if needed
+      const handleVisibilityChange = () => {
+        if (!document.hidden && this._audioElement && this._audioElement.paused) {
+          this._audioElement.play().catch(() => {
+            // Silently catch errors on resume attempt
+          });
+        }
+      };
+      
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      
+      // Store the handler for cleanup
+      this._audioElement.addEventListener('ended', () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      });
+
       // Play the audio
       this._audioElement.play().catch(error => {
         console.warn('[LAppWavFileHandler] Audio playback failed:', error);
         console.warn('This might be due to browser autoplay policy. User interaction may be required.');
+        
+        // Try to play on first user interaction
+        const playOnInteraction = () => {
+          if (this._audioElement) {
+            this._audioElement.play().catch(() => {});
+            document.removeEventListener('click', playOnInteraction);
+            document.removeEventListener('touchstart', playOnInteraction);
+          }
+        };
+        
+        document.addEventListener('click', playOnInteraction, { once: true });
+        document.addEventListener('touchstart', playOnInteraction, { once: true });
       });
     } catch (error) {
       console.error('[LAppWavFileHandler] Error creating audio:', error);
