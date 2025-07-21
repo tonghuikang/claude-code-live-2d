@@ -15,7 +15,7 @@ export class ActionClient {
   private intervalId: number | null = null;
   private onAction: (action: Action) => void;
 
-  constructor(serverUrl: string = 'http://localhost:3000', pollInterval: number = 500) {
+  constructor(serverUrl: string = 'http://localhost:3000', pollInterval: number = 100) {
     this.serverUrl = serverUrl;
     this.pollInterval = pollInterval;
   }
