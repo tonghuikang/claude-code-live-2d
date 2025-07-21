@@ -21,20 +21,48 @@
     "puppeteer"
   ],
   "hooks": {
-    "Notification": [
+    "PreToolUse": [
       {
-        "matcher": "*",
+        "matcher": "WebSearch",
         "hooks": [
           {
             "type": "command",
-            "command": "say requesting permissions"
+            "command": "actions/thinking.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "!WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "actions/random.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "actions/requesting_permissions_soft.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "!(Edit|Write)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "actions/requesting_permissions_loud.sh"
           }
         ]
       }
     ],
     "Stop": [
       {
-        "matcher": "*",
         "hooks": [
           {
             "type": "command",

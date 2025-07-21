@@ -1,22 +1,23 @@
-# Setup for Claude Code voice notifying companion
+# Setup for Claude Code Voice Notifying Companion
 
 ## Serve
-- npm install && npm serve
+- npm install && npm run serve
 - node server.js
 
-## Claude Code setup
+## Claude Code Setup
 
-You need to copy to the repository that you are working on
+You need to copy the following to the repository that you are working on:
 - `.claude/settings.json`
+- `actions/`
 
 ## Usage
 
-Open up https://localhost:5001, and https://localhost:5001 should play messages
+Open https://localhost:5001, which should play messages
 
-How this works
-- On certain points of your Claude Code usage, it will send a message to https://localhost:3000
-- https://localhost:5001 will read https://localhost:3000 for new messages
-- Test by running the bash script of `./actions/requesting_permissions_loud.sh`
+How this works:
+- At certain points during your Claude Code usage, it will send a message to https://localhost:3000
+- https://localhost:5001 will read from https://localhost:3000 for new messages
+- Test by running the bash script: `./actions/requesting_permissions_loud.sh`
 
 
 Original README below
