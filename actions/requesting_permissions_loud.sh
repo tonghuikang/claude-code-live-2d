@@ -1,4 +1,15 @@
-# Requesting permissions (with sound, loud)
-curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d '{"type":"motion","group":"FlickRight","index":1}'
-curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d '{"type":"motion","group":"Shake","index":0}'
-curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d '{"type":"motion","group":"Shake","index":1}'
+#!/bin/bash
+# Requesting permissions (loud) - play a random attention-getting motion with sound
+
+# Array of loud/attention-getting motions with specific indices
+MOTIONS=(
+  '{"type":"motion","group":"FlickRight","index":1}'
+  '{"type":"motion","group":"Shake","index":0}'
+  '{"type":"motion","group":"Shake","index":1}'
+)
+
+# Select a random motion
+RANDOM_MOTION=${MOTIONS[$RANDOM % ${#MOTIONS[@]}]}
+
+# Send the action
+curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d "$RANDOM_MOTION"
