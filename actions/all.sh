@@ -51,7 +51,7 @@ curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d
 # Requesting permissions (with sound, loud)
 # haru_normal_03.motion3.json (with sound)
 curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d '{"type":"motion","group":"FlickRight","index":1}'
-# haru_normal_07.motion3.json (with sound)
+# haru_normal_07.motion3.json (with sound - too loud)
 curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d '{"type":"motion","group":"Shake","index":0}'
-# haru_normal_08.motion3.json (with sound - very loud)
+# haru_normal_08.motion3.json (with sound - too loud)
 curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d '{"type":"motion","group":"Shake","index":1}'
