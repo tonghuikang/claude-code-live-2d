@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "say operation complete"
+            "command": "actions/operation_complete.sh"
           }
         ]
       }
