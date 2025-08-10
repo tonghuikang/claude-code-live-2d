@@ -10,4 +10,4 @@ MOTIONS=(
 RANDOM_MOTION=${MOTIONS[$RANDOM % ${#MOTIONS[@]}]}
 
 # Send the action
-curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d "$RANDOM_MOTION" &
+curl -X POST https://tonghuikang--live2d-action-server-fastapi-app.modal.run/action -H "Content-Type: application/json" -d "$RANDOM_MOTION" &

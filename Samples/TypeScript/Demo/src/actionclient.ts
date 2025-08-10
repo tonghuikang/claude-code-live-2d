@@ -15,7 +15,7 @@ export class ActionClient {
   private intervalId: number | null = null;
   private onAction: (action: Action) => void;
 
-  constructor(serverUrl: string = 'http://localhost:3000', pollInterval: number = 100) {
+  constructor(serverUrl: string = 'https://tonghuikang--live2d-action-server-fastapi-app.modal.run', pollInterval: number = 100) {
     this.serverUrl = serverUrl;
     this.pollInterval = pollInterval;
   }
