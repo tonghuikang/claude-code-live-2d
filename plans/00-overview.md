@@ -36,8 +36,10 @@ This project enables per-user Live2D notifications for coding actions from Claud
 - [ ] Copy-paste local hook config (Claude Code) with token & URL
 - [ ] Basic metrics, minimal logging, rate limiting
 
-## Out of Scope (Phase 1)
+## Out of Scope (MVP)
+- Security hardening (auth/tokens, rate limits, CORS) — ignored for demo
+- Testing & QA (unit/integration/E2E/load) — ignored for demo
 - Paid plans/billing
-- OAuth sign-in (optional later)
+- OAuth sign-in
 - Persistent event history
 - Multi-region active-active
