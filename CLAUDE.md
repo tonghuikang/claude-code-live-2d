@@ -50,8 +50,8 @@ npm run serve
 
 ### Deployment
 - Modal server is already deployed and accessible
-- To redeploy: `modal deploy modal_server.py`
-- For local testing: `modal serve modal_server.py`
+- To redeploy: `modal deploy Samples/backend/modal_server.py`
+- For local testing: `modal serve Samples/backend/modal_server.py`
 
 ## Coding Conventions
 
@@ -86,7 +86,8 @@ npm run serve
 ### Configuration Files
 - `.claude/settings.json`: Hook configurations for Claude Code integration
 - `Samples/TypeScript/Demo/package.json`: Build and serve scripts
-- `modal_server.py`: Modal-deployed action queue server
+- `Samples/backend/modal_server.py`: Modal-deployed action queue server
+- `Samples/backend/requirements.txt`: Python dependencies for Modal server
 
 ### Action Scripts
 - `/actions/thinking.sh`: Triggers thinking animation (FlickRight group)
@@ -224,10 +225,10 @@ constructor(serverUrl: string = '...', pollInterval: number = 100) {
 ### Deploy Changes to Modal
 ```bash
 # From project root
-modal deploy modal_server.py
+modal deploy Samples/backend/modal_server.py
 
 # For local testing
-modal serve modal_server.py
+modal serve Samples/backend/modal_server.py
 ```
 
 ## Quick Reference
@@ -255,11 +256,13 @@ npm run clean      # Clean build artifacts
 ├── Framework/               # Cubism Framework source
 ├── Samples/
 │   ├── Resources/          # Live2D models and assets
-│   └── TypeScript/Demo/    # Main application
-│       ├── src/           # TypeScript source files
-│       ├── public/        # Built assets
-│       └── package.json   # Build configuration
-└── modal_server.py         # Modal deployment script
+│   ├── TypeScript/Demo/    # Main application
+│   │   ├── src/           # TypeScript source files
+│   │   ├── public/        # Built assets
+│   │   └── package.json   # Build configuration
+│   └── backend/           # Modal server backend
+│       ├── modal_server.py    # Modal deployment script
+│       └── requirements.txt   # Python dependencies
 ```
 
 ## Additional Context
