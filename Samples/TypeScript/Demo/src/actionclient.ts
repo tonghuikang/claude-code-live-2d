@@ -19,9 +19,16 @@ export class ActionClient {
   constructor(serverUrl: string = 'https://tonghuikang--live2d-action-server-fastapi-app.modal.run', pollInterval: number = 100) {
     this.serverUrl = serverUrl;
     this.pollInterval = pollInterval;
-    // Generate a unique session ID for this client instance
-    this.sessionId = this.generateSessionId();
-    console.log(`[ActionClient] Initialized with session ID: ${this.sessionId}`);
+    // Read session ID from URL parameter, or generate one if not provided
+    const urlSessionId = this.getSessionIdFromUrl();
+    this.sessionId = urlSessionId || this.generateSessionId();
+    console.log(`[ActionClient] Initialized with session ID: ${this.sessionId} ${urlSessionId ? '(from URL)' : '(generated)'}`);
+  }
+
+  private getSessionIdFromUrl(): string | null {
+    // Extract session_id from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('session_id');
   }
 
   private generateSessionId(): string {

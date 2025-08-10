@@ -21,13 +21,23 @@
     "puppeteer"
   ],
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "actions/init_session.sh"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "WebSearch",
         "hooks": [
           {
             "type": "command",
-            "command": "export SESSION_ID=$(uuidgen 2>/dev/null || echo $RANDOM-$(date +%s)) && actions/thinking.sh && actions/idle.sh"
+            "command": "source /tmp/claude_session_id 2>/dev/null || export SESSION_ID=fallback-$(date +%s) && actions/thinking.sh && actions/idle.sh"
           }
         ]
       }
@@ -37,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "export SESSION_ID=$(uuidgen 2>/dev/null || echo $RANDOM-$(date +%s)) && actions/happy.sh"
+            "command": "source /tmp/claude_session_id 2>/dev/null || export SESSION_ID=fallback-$(date +%s) && actions/happy.sh"
           }
         ]
       }
@@ -47,7 +57,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "export SESSION_ID=$(uuidgen 2>/dev/null || echo $RANDOM-$(date +%s)) && actions/requesting_permissions.sh && actions/idle.sh"
+            "command": "source /tmp/claude_session_id 2>/dev/null || export SESSION_ID=fallback-$(date +%s) && actions/requesting_permissions.sh && actions/idle.sh"
           }
         ]
       }
@@ -57,7 +67,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "export SESSION_ID=$(uuidgen 2>/dev/null || echo $RANDOM-$(date +%s)) && actions/operation_complete.sh && actions/idle.sh"
+            "command": "source /tmp/claude_session_id 2>/dev/null || export SESSION_ID=fallback-$(date +%s) && actions/operation_complete.sh && actions/idle.sh"
           }
         ]
       }
