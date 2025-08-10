@@ -1,24 +1,21 @@
 # Milestones & Phased Delivery
 
-## Milestone 1: MVP (1-2 weeks)
-- [ ] Anonymous user + token issuance
-- [ ] Webhook validate + publish to user
-- [ ] WebSocket client in frontend
-- [ ] Live2D reacts to 3-4 core events
-- [ ] Copyable Claude Code hook config
+## Milestone 0: Wire-only MVP (1-2 days)
+- [ ] Backend: Single public webhook `POST /api/webhook/cli` (no auth)
+- [ ] Backend: Broadcast incoming events to all connected clients (WS or SSE)
+- [ ] Frontend: One page with Live2D reacting to 3-4 core events
+- [ ] Examples: curl + Claude Code hook snippet to trigger events
 
-## Milestone 2: Hardening (1-2 weeks)
-- [ ] Rate limits, input validation, CORS
-- [ ] SSE fallback
-- [ ] Logs + dashboard
-- [ ] Isolation tests
+## Milestone 1: Demo polish (1-2 days)
+- [ ] Frontend: auto-reconnect, simple connection status indicator
+- [ ] Backend: basic structured logs
+- [ ] Frontend: copy-to-clipboard for webhook URL and sample payloads
+- [ ] Minimal error toasts
 
-## Milestone 3: UX + Docs (1 week)
-- [ ] Full docs & installers
-- [ ] Error handling & polishing
-- [ ] Token rotation UI
+## Milestone 2: Optional next steps (later)
+- [ ] Authentication/tokens and per-user isolation
+- [ ] Rate limits and input validation
+- [ ] SSE fallback if starting with WS (or vice-versa)
+- [ ] Redis Pub/Sub for multi-instance scale
+- [ ] Runbooks, SLOs, dashboards
 
-## Milestone 4: Scale & Multi-instance (2+ weeks)
-- [ ] Redis Pub/Sub (if needed)
-- [ ] Load tests + optimizations
-- [ ] Runbooks and SLOs
