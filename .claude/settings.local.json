@@ -1,9 +1,24 @@
 {
   "permissions": {
     "allow": [
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_screenshot",
+      "mcp__puppeteer__puppeteer_click",
+      "mcp__puppeteer__puppeteer_fill",
+      "mcp__puppeteer__puppeteer_evaluate",
+      "mcp__puppeteer__puppeteer_select",
+      "mcp__puppeteer__puppeteer_hover",
+      "Bash(curl:*)",
+      "Bash(npm run serve:*)",
+      "Bash(npm run build:*)",
+      "Bash(rm:*)",
+      "Bash(curl -X POST:*)",
+      "Bash(pkill:*)",
       "Bash(mkdir:*)",
       "Bash(mv:*)",
-      "Bash(modal deploy:*)"
+      "Bash(modal deploy:*)",
+      "Bash(source:*)",
+      "Bash(./actions/requesting_permissions.sh:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

@@ -2,7 +2,14 @@
 # Reference script for all available motions with session support
 # Use SESSION_ID environment variable
 
-SESSION_ID=${SESSION_ID:-default}
+# Source the session ID from the temp file
+if [ -f /tmp/claude_session_id ]; then
+  source /tmp/claude_session_id
+else
+  echo "Error: Session ID file not found at /tmp/claude_session_id" >&2
+  echo "Please run init_session.sh first to initialize the session." >&2
+  exit 1
+fi
 
 # Shocked
 # haru_m_07.motion3.json

@@ -1,8 +1,14 @@
 #!/bin/bash
 # Operation complete - play a random celebratory motion with sound
 
-# Use SESSION_ID from environment, or 'default' if not set
-SESSION_ID=${SESSION_ID:-default}
+# Source the session ID from the temp file
+if [ -f /tmp/claude_session_id ]; then
+  source /tmp/claude_session_id
+else
+  echo "Error: Session ID file not found at /tmp/claude_session_id" >&2
+  echo "Please run init_session.sh first to initialize the session." >&2
+  exit 1
+fi
 
 # Array of celebration/completion motions with specific indices
 MOTIONS=(
