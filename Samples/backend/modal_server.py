@@ -15,9 +15,9 @@ volume = modal.Volume.from_name("live2d-actions", create_if_missing=True)
 # Create the image with required dependencies
 image = modal.Image.debian_slim().pip_install("fastapi[standard]")
 
-# Action queue stored in memory (will reset on cold starts)
+# Action queues stored in memory, separated by session_id (will reset on cold starts)
 # For persistence across invocations, you'd need to use Modal's storage
-action_queue = []
+action_queues = {}
 
 def generate_id():
     """Generate a random ID for actions"""
@@ -43,29 +43,37 @@ def fastapi_app():
     )
     
     @web_app.post("/action")
-    async def add_action(action: Dict[str, Any]):
-        """Add an action to the queue"""
+    async def add_action(action: Dict[str, Any], session_id: str = "default"):
+        """Add an action to the queue for a specific session"""
+        if session_id not in action_queues:
+            action_queues[session_id] = []
+        
         action["id"] = generate_id()
         action["timestamp"] = int(time.time() * 1000)
-        action_queue.append(action)
+        action_queues[session_id].append(action)
         
-        print(f"[ActionQueue] Added action: {json.dumps(action)}")
+        print(f"[ActionQueue] Session {session_id}: Added action: {json.dumps(action)}")
         
-        return {"success": True, "actionId": action["id"]}
+        return {"success": True, "actionId": action["id"], "sessionId": session_id}
     
     @web_app.get("/actions")
-    async def get_actions():
-        """Get all queued actions and clear the queue"""
-        global action_queue
-        actions = action_queue.copy()
-        action_queue = []
+    async def get_actions(session_id: str = "default"):
+        """Get all queued actions for a specific session and clear that session's queue"""
+        if session_id not in action_queues:
+            return {"actions": []}
+        
+        actions = action_queues[session_id].copy()
+        action_queues[session_id] = []
         return {"actions": actions}
     
     @web_app.get("/status")
-    async def get_status():
-        """Get queue status"""
+    async def get_status(session_id: str = "default"):
+        """Get queue status for a specific session"""
+        queue_size = len(action_queues.get(session_id, []))
         return {
-            "queueSize": len(action_queue),
+            "sessionId": session_id,
+            "queueSize": queue_size,
+            "totalSessions": len(action_queues),
             "timestamp": int(time.time() * 1000)
         }
     
