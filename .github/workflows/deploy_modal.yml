@@ -27,12 +27,11 @@ jobs:
         
     - name: Authenticate with Modal
       run: |
-        echo "${{ secrets.MODAL_TOKEN_ID }}" | modal token set --token-id -
-        echo "${{ secrets.MODAL_TOKEN_SECRET }}" | modal token set --token-secret -
+        modal token set --token-id "$MODAL_TOKEN_ID" --token-secret "$MODAL_TOKEN_SECRET"
       env:
         MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
-        MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
-        
+        MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}        
+
     - name: Deploy to Modal
       run: |
         modal deploy modal_server.py
