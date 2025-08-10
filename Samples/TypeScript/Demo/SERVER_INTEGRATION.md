@@ -4,10 +4,11 @@ This demo has been enhanced with a server that can receive actions via HTTP and 
 
 ## Architecture
 
-1. **Action Server** (`server.js`) - A Node.js HTTP server that:
-   - Listens on port 3000
+1. **Action Server** - Now deployed on Modal at:
+   - https://tonghuikang--live2d-action-server-fastapi-app.modal.run
    - Accepts POST requests to queue actions
    - Provides GET endpoint to retrieve queued actions
+   - Local proxy available via `server.js` on port 3000
 
 2. **Action Client** (`src/actionclient.ts`) - A TypeScript client that:
    - Polls the server every 500ms for new actions
@@ -38,22 +39,22 @@ This demo has been enhanced with a server that can receive actions via HTTP and 
 
 ```bash
 # Trigger a body tap motion
-curl -X POST http://localhost:3000/action \
+curl -X POST https://tonghuikang--live2d-action-server-fastapi-app.modal.run/action \
   -H "Content-Type: application/json" \
   -d '{"type":"motion","group":"TapBody"}'
 
 # Change expression
-curl -X POST http://localhost:3000/action \
+curl -X POST https://tonghuikang--live2d-action-server-fastapi-app.modal.run/action \
   -H "Content-Type: application/json" \
   -d '{"type":"expression","name":"F01"}'
 
 # Simulate a tap
-curl -X POST http://localhost:3000/action \
+curl -X POST https://tonghuikang--live2d-action-server-fastapi-app.modal.run/action \
   -H "Content-Type: application/json" \
   -d '{"type":"tap","x":0.5,"y":0.5}'
 
 # Trigger idle motion
-curl -X POST http://localhost:3000/action \
+curl -X POST https://tonghuikang--live2d-action-server-fastapi-app.modal.run/action \
   -H "Content-Type: application/json" \
   -d '{"type":"motion","group":"Idle"}'
 ```

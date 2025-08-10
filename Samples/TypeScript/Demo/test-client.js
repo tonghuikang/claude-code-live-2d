@@ -1,11 +1,11 @@
-const http = require('http');
+const https = require('https');
 
 function sendAction(action) {
   const data = JSON.stringify(action);
   
   const options = {
-    hostname: 'localhost',
-    port: 3000,
+    hostname: 'tonghuikang--live2d-action-server-fastapi-app.modal.run',
+    port: 443,
     path: '/action',
     method: 'POST',
     headers: {
@@ -14,7 +14,7 @@ function sendAction(action) {
     }
   };
 
-  const req = http.request(options, (res) => {
+  const req = https.request(options, (res) => {
     let body = '';
     res.on('data', (chunk) => {
       body += chunk;
@@ -57,6 +57,6 @@ setTimeout(() => {
 }, 7000);
 
 console.log('\nYou can also manually send actions using curl:');
-console.log('curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d \'{"type":"motion","group":"TapBody"}\'');
-console.log('curl -X POST http://localhost:3000/action -H "Content-Type: application/json" -d \'{"type":"expression","name":"F01"}\'');
-console.log('curl -X GET http://localhost:3000/status');
+console.log('curl -X POST https://tonghuikang--live2d-action-server-fastapi-app.modal.run/action -H "Content-Type: application/json" -d \'{"type":"motion","group":"TapBody"}\'');
+console.log('curl -X POST https://tonghuikang--live2d-action-server-fastapi-app.modal.run/action -H "Content-Type: application/json" -d \'{"type":"expression","name":"F01"}\'');
+console.log('curl -X GET https://tonghuikang--live2d-action-server-fastapi-app.modal.run/status');
