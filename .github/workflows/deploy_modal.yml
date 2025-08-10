@@ -5,6 +5,7 @@ on:
     branches: [ main, master ]
     paths:
       - 'modal_server.py'
+      - 'requirements.txt'
       - '.github/workflows/deploy-modal.yml'
   workflow_dispatch:  # Allow manual triggering
 
@@ -21,9 +22,9 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: Install Modal
+    - name: Install dependencies
       run: |
-        pip install modal
+        pip install -r requirements.txt
         
     - name: Authenticate with Modal
       run: |
