@@ -1,8 +1,23 @@
 # Setup for Claude Code Voice Notifying Companion
 
-## Serve
-- npm install && npm run serve
-- node server.js
+## Frontend serving
+
+```
+(cd Samples/TypeScript/Demo && npm install && npm run serve)
+```
+
+## Relay serving
+
+```
+(cd Samples/TypeScript/Demo && node server.js)
+```
+
+## Testing
+
+```
+actions/operation_complete.sh
+actions/all.sh
+```
 
 ## Claude Code Setup
 
