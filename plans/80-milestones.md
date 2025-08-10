@@ -1,21 +1,26 @@
 # Milestones & Phased Delivery
 
-## Milestone 0: Wire-only MVP (1-2 days)
+## Milestone H0 (30 min): End-to-end "hello"
 - [ ] Backend: Single public webhook `POST /api/webhook/cli` (no auth)
-- [ ] Backend: Broadcast incoming events to all connected clients (WS or SSE)
-- [ ] Frontend: One page with Live2D reacting to 3-4 core events
-- [ ] Examples: curl + Claude Code hook snippet to trigger events
+- [ ] Backend: In-memory broadcast to all clients via WebSocket (pick WS to start)
+- [ ] Frontend: Simple page connects to WS and logs messages to console
+- [ ] curl example: send `{ "event_type": "ping" }` -> see console message
 
-## Milestone 1: Demo polish (1-2 days)
-- [ ] Frontend: auto-reconnect, simple connection status indicator
-- [ ] Backend: basic structured logs
-- [ ] Frontend: copy-to-clipboard for webhook URL and sample payloads
-- [ ] Minimal error toasts
+## Milestone H1 (60-90 min): Live2D reacts
+- [ ] Frontend: integrate one Live2D model (existing asset)
+- [ ] Map 3 events -> animations: `task_started`, `task_succeeded`, `task_failed`
+- [ ] Minimal HUD: connection status badge (green/red)
+- [ ] Frontend: copy-to-clipboard for webhook URL and payload samples
 
-## Milestone 2: Optional next steps (later)
-- [ ] Authentication/tokens and per-user isolation
+## Milestone H2 (60 min): Claude Code hook demo
+- [ ] Provide Claude Code hook snippet (no auth) targeting webhook URL
+- [ ] Trigger 2-3 real actions to emit events (start/progress/success)
+- [ ] Add lightweight progress animation on `task_progress`
+- [ ] Record a 30s demo video
+
+## Parking Lot (later)
+- [ ] Auth/tokens and per-user isolation
 - [ ] Rate limits and input validation
-- [ ] SSE fallback if starting with WS (or vice-versa)
-- [ ] Redis Pub/Sub for multi-instance scale
+- [ ] SSE fallback or dual support
+- [ ] Redis Pub/Sub for scale
 - [ ] Runbooks, SLOs, dashboards
-
