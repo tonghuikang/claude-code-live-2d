@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "source /tmp/claude_session_id 2>/dev/null || export SESSION_ID=fallback-$(date +%s) && actions/thinking.sh && actions/idle.sh"
+            "command": "actions/thinking.sh && actions/idle.sh"
           }
         ]
       }
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "source /tmp/claude_session_id 2>/dev/null || export SESSION_ID=fallback-$(date +%s) && actions/happy.sh"
+            "command": "actions/happy.sh"
           }
         ]
       }
@@ -36,7 +36,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "source /tmp/claude_session_id 2>/dev/null || export SESSION_ID=fallback-$(date +%s) && actions/requesting_permissions.sh && actions/idle.sh"
+            "command": "actions/requesting_permissions.sh && actions/idle.sh"
           }
         ]
       }
@@ -46,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "source /tmp/claude_session_id 2>/dev/null || export SESSION_ID=fallback-$(date +%s) && actions/operation_complete.sh && actions/idle.sh"
+            "command": "actions/operation_complete.sh && actions/idle.sh"
           }
         ]
       }

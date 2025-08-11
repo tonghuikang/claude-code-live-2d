@@ -16,7 +16,7 @@ export class ActionClient {
   private onAction: (action: Action) => void;
   private sessionId: string;
 
-  constructor(serverUrl: string = 'https://tonghuikang--live2d-action-server-fastapi-app.modal.run', pollInterval: number = 100) {
+  constructor(serverUrl: string = 'https://tonghuikang--live2d-action-server-fastapi-app.modal.run', pollInterval: number = 500) {
     this.serverUrl = serverUrl;
     this.pollInterval = pollInterval;
     // Read session ID from URL parameter, or generate one if not provided
