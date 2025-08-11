@@ -57,7 +57,8 @@
 			],
 			"FlickRight": [
 				{
-					"File": "motion/haru_m_05.motion3.json"
+					"File": "motion/haru_m_05.motion3.json",
+					"Sound": "sounds/haru_m_05.wav"
 				},
 				{
 					"File": "motion/haru_normal_03.motion3.json",
