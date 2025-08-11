@@ -47,12 +47,14 @@ def fastapi_app():
         """Add an action to the queue for a specific session"""
         if session_id not in action_queues:
             action_queues[session_id] = []
+            print(f"[NEW SESSION] Created new session: {session_id}")
         
         action["id"] = generate_id()
         action["timestamp"] = int(time.time() * 1000)
         action_queues[session_id].append(action)
         
         print(f"[ActionQueue] Session {session_id}: Added action: {json.dumps(action)}")
+        print(f"[SessionInfo] Session: {session_id}, Queue size: {len(action_queues[session_id])}, Total sessions: {len(action_queues)}")
         
         return {"success": True, "actionId": action["id"], "sessionId": session_id}
     
@@ -60,16 +62,28 @@ def fastapi_app():
     async def get_actions(session_id: str = "default"):
         """Get all queued actions for a specific session and clear that session's queue"""
         if session_id not in action_queues:
+            print(f"[NoSession] No session found for: {session_id}")
             return {"actions": []}
         
         actions = action_queues[session_id].copy()
         action_queues[session_id] = []
+        
+        if actions:
+            print(f"[ActionsRetrieved] Session {session_id}: Retrieved {len(actions)} actions")
+            for action in actions:
+                print(f"  - Action: {action.get('type', 'unknown')} (id: {action.get('id', 'unknown')})")
+        
         return {"actions": actions}
     
     @web_app.get("/status")
     async def get_status(session_id: str = "default"):
         """Get queue status for a specific session"""
         queue_size = len(action_queues.get(session_id, []))
+        
+        print(f"[StatusCheck] Session: {session_id}, Queue size: {queue_size}, Total sessions: {len(action_queues)}")
+        if action_queues:
+            print(f"[ActiveSessions] Current sessions: {list(action_queues.keys())}")
+        
         return {
             "sessionId": session_id,
             "queueSize": queue_size,

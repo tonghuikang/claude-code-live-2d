@@ -19,7 +19,8 @@
       "Bash(modal deploy:*)",
       "Bash(source:*)",
       "Bash(./actions/requesting_permissions.sh:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(./actions/happy.sh:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

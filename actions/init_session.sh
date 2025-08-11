@@ -1,15 +1,13 @@
 #!/bin/bash
 
-# Generate a unique session ID using timestamp + random string
-SESSION_ID="session-$(date +%s)-$(openssl rand -hex 4)"
-
-# Export the session ID for use by other scripts
-export SESSION_ID="$SESSION_ID"
-
-# Only write to /tmp/claude_session_id if SESSION_ID doesn't already exist there
-if [ ! -f /tmp/claude_session_id ] || ! grep -q "SESSION_ID=" /tmp/claude_session_id; then
-    echo "export SESSION_ID=\"$SESSION_ID\"" > /tmp/claude_session_id
+# If file doesn't exist, generate session ID and write it
+if [ ! -f /tmp/claude_session_id ]; then
+    SESSION_ID="session-$(date +%s)-$(openssl rand -hex 4)"
+    echo "SESSION_ID=\"$SESSION_ID\"" > /tmp/claude_session_id
 fi
+
+# Read the session ID from the file
+source /tmp/claude_session_id
 
 # Display the URL with session ID to the user
 echo " "
