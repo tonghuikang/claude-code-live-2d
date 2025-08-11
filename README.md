@@ -1,5 +1,16 @@
 # Setup for Claude Code Voice Notifying Companion
 
+## To use
+
+```
+mkdir -p .claude && curl -o .claude/settings.json https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/.claude/settings.json
+```
+
+
+See [SUBMISSION.md](SUBMISSION.md) for more information
+
+---
+
 ## Frontend serving
 
 ```
