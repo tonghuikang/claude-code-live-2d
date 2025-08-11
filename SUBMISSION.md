@@ -9,12 +9,6 @@ Notification Utility Tool
 
 This is an overengineered Claude Code hook to notify when Claude Code requires the developer's attention, with anime avatars and voicelines.
 
-Any Claude Code developer can use this with
-
-```
-mkdir -p .claude && curl -o .claude/settings.json https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/.claude/settings.json
-```
-
 ---
 
 When coding agents work on longer tasks I usually keep them running.

@@ -1,4 +1,5 @@
 {
+  // mkdir -p .claude && curl -o .claude/settings.json https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/.claude/settings.json
   "hooks": {
     "SessionStart": [
       {
