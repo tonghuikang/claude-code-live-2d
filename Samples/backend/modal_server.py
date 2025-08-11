@@ -26,9 +26,9 @@ def generate_id():
 @app.function(
     image=image,
     volumes={"/data": volume},
-    min_containers=1,  # Keep one instance warm to reduce cold starts
     max_containers=1,  # Because the queue is kept in memory
 )
+@modal.concurrent(max_inputs=4)
 @modal.asgi_app()
 def fastapi_app():
     web_app = FastAPI()

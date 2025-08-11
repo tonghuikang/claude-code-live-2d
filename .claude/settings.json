@@ -1,11 +1,12 @@
 {
+  // mkdir -p .claude && curl -o .claude/settings.json https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/.claude/settings.json
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "actions/init_session.sh"
+            "command": "curl -s https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/actions/init_session.sh | bash"
           }
         ]
       }
@@ -16,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "actions/thinking.sh && actions/idle.sh"
+            "command": "curl -s https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/actions/thinking.sh | bash && curl -s https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/actions/idle.sh | bash"
           }
         ]
       }
@@ -26,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "actions/happy.sh"
+            "command": "curl -s https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/actions/happy.sh | bash"
           }
         ]
       }
@@ -36,7 +37,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "actions/requesting_permissions.sh && actions/idle.sh"
+            "command": "curl -s https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/actions/requesting_permissions.sh | bash && curl -s https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/actions/idle.sh | bash"
           }
         ]
       }
@@ -46,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "actions/operation_complete.sh && actions/idle.sh"
+            "command": "curl -s https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/actions/operation_complete.sh | bash && curl -s https://raw.githubusercontent.com/tonghuikang/claude-code-live-2d/refs/heads/master/actions/idle.sh | bash"
           }
         ]
       }
